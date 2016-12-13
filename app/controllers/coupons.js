@@ -37,6 +37,9 @@ module.exports = {
 		}
 		else {
 			searchQuery.code = req.params.id.toUpperCase();
+            if (req.query.valid) {
+                searchQuery.valid = req.query.valid;
+            }
 		}
 		// Send code 404 (Not Found) if not found, 412 (Precondition Failed) if found but not compliant, otherwise 400
 		Coupon.find(searchQuery).lean().exec(function (err, coupons) {

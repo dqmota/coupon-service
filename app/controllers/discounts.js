@@ -40,7 +40,7 @@ module.exports = {
 	// Create new Discount
 	create: function (req, res, next) {
 		var couponCode = req.body.code || '';
-		Coupon.find({ code: couponCode.toUpperCase() }).exec(function (err, coupons) {
+		Coupon.find({ code: couponCode.toUpperCase(), valid: true }).exec(function (err, coupons) {
 			if (err) {
 				return res.status(400).json(err);
 			}
@@ -55,8 +55,18 @@ module.exports = {
 						return res.status(400).json(err);
 					}
 					else {
-						console.log('Applied discount %s to user %s.', req.body.code, req.body.user)
-						return res.json(req.body);
+                        var cp = coupons[0];
+                        var redemptions = ++cp.times_redeemed;
+                        var isValid = (cp.max_redemptions > redemptions);
+                        Coupon.update({ _id: cp._id }, { $set: { times_redeemed: redemptions, valid: isValid }}, { upsert: true }, function (err, rowsUpdated) {
+                            if (err) {
+                                return res.status(400).json(err);
+                            }
+                            else {
+                                console.log('Applied discount %s to user %s. %s', req.body.code, req.body.user);
+                                return res.json(req.body);
+                            }
+				        });
 					}
 				});
 			}

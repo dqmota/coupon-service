@@ -14,6 +14,7 @@ var CouponSchema = new Schema({
 	redeem_by: Date,
 	max_redemptions: Number,
 	times_redeemed: { type: Number, default: 0 },
+    valid: { type: Boolean, default: true },
 	// Reward:
 	percent_off: Number,
 	amount_off: Number,
