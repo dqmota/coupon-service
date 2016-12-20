@@ -80,7 +80,12 @@ Create new coupon:
 	curl -X POST -H "Content-Type: application/json" -d '{ "email": "mit.edu", "percent_off": 10 }' http://localhost:3014/api/coupons?password=MYPASSWORD
 
 	// Example: provide free services in a coupon
-	curl -X POST -H "Content-Type: application/json" -d '{ "code": "FREESERVICES", "metadata": { "subscriptions": [{ "id": "unlimited_projects" }] } }' http://localhost:3014/api/coupons?password=MYPASSWORD
+	curl -X POST -H "Content-Type: application/json" -d '{ "code": "FREESERVICES", "metadata": { "subscriptions": [{ "id": "unlimited_projects" }] } }' http://localhost:3014/api/coupons?password=MYPASS
+
+        // Example: creates a random coupon from a regex 
+        curl -X POST -H "Content-Type: application/json" -d '{ "regex": "PROMO-[a-z]{4}-[0-9]{5}", "duration": "once", "max_redemptions": 1 }' http://localhost:3014/api/coupons?password=MYPASSWORD
+
+WORD
 
 Update coupon:
 
