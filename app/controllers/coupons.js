@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var md5 = require('md5');
+var RandExp = require('randexp');
 var mongoose = require('mongoose');
 var Coupon = mongoose.model('Coupon');
 
@@ -58,6 +59,8 @@ module.exports = {
 	// Create new Coupon
 	create: function (req, res, next) {
 		var newCoupon = new Coupon(req.body);
+		if (req.body.regex)
+			newCoupon.code = new RandExp(req.body.regex).gen();
 		if (!newCoupon.code)
 			newCoupon.code = md5(Date.now() + Math.random());
 		newCoupon.code = newCoupon.code.toUpperCase();
